@@ -26,27 +26,7 @@ object EncryptUtils {
         return Base64.getEncoder().encodeToString(cipherText)
     }
 
-    @Throws(
-        NoSuchAlgorithmException::class,
-        InvalidKeySpecException::class,
-        URISyntaxException::class,
-        IOException::class
-    )
-    fun getRSAPublicKey(context: Context): RSAPublicKey {
 
-        val tbc = context.assets.open("tbc.pem")
-        var publicKeyContent =
-            String(tbc.readAllBytes)
-        publicKeyContent =
-            publicKeyContent.replace("\\n".toRegex(), "").replace("-----BEGIN PUBLIC KEY-----", "")
-                .replace("-----END PUBLIC KEY-----", "")
-        val kf = KeyFactory.getInstance("RSA")
-        val keySpecX509 =
-            X509EncodedKeySpec(
-                Base64.getDecoder().decode(publicKeyContent)
-            )
-        return kf.generatePublic(keySpecX509) as RSAPublicKey
-    }
 
     private val InputStream.readAllBytes: ByteArray get(){
         val bufLen = 4 * 0x400 // 4KB
